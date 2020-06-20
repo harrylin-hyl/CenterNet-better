@@ -50,7 +50,7 @@ _PREDEFINED_SPLITS_COCO["coco"] = {
     "coco_2017_test-dev": ("coco/test2017",
                            "coco/annotations/image_info_test-dev2017.json"),
     "coco_2017_val_100": ("coco/val2017",
-                          "coco/annotations/instances_val2017_100.json"),
+                          "coco/annotations/instances_val2017_100.json")                      
 }
 
 
@@ -78,7 +78,7 @@ def register_all_pascal_voc(root=osp.join(
         ("voc_2007_test", "VOC2007", "test"),
         ("voc_2012_trainval", "VOC2012", "trainval"),
         ("voc_2012_train", "VOC2012", "train"),
-        ("voc_2012_val", "VOC2012", "val"),
+        ("voc_2012_val", "VOC2012", "val")
     ]
     for name, dirname, split in SPLITS:
         year = 2007 if "2007" in name else 2012

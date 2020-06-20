@@ -3,3 +3,4 @@
 
 from .backbone import Backbone
 from .resnet_backbone import ResnetBackbone
+from .resnet_fpn_backbone import ResnetFPNBackbone

@@ -9,6 +9,7 @@ import os
 import imagesize
 import numpy as np
 from PIL import Image
+import random
 
 from dl_lib.structures import Boxes, BoxMode, PolygonMasks
 from dl_lib.utils.file_io import PathManager
@@ -98,6 +99,7 @@ Category ids in annotations are not in [1, #categories]! We'll apply a mapping f
     #  'date_captured': '2013-11-17 05:57:24',
     #  'id': 1268}
     imgs = coco_api.loadImgs(img_ids)
+    
     # anns is a list[list[dict]], where each dict is an annotation
     # record for an object. The inner list enumerates the objects in an image
     # and the outer list enumerates over images. Example of anns[0]:
@@ -114,11 +116,10 @@ Category ids in annotations are not in [1, #categories]! We'll apply a mapping f
     #   'id': 42986},
     #  ...]
     anns = [coco_api.imgToAnns[img_id] for img_id in img_ids]
-
     if "minival" not in json_file:
         # The popular valminusminival & minival annotations for COCO2014 contain this bug.
         # However the ratio of buggy annotations there is tiny and does not affect accuracy.
-        # Therefore we explicitly white-list them.
+        # Therefore wce explicitly white-list them.
         ann_ids = [ann["id"] for anns_per_image in anns for ann in anns_per_image]
         assert len(set(ann_ids)) == len(ann_ids), "Annotation ids in '{}' are not unique!".format(
             json_file

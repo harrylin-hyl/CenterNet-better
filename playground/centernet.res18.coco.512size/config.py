@@ -46,25 +46,48 @@ _config_dict = dict(
         NUM_WORKERS=4,
     ),
     DATASETS=dict(
-        TRAIN=("coco_2017_train",),
-        TEST=("coco_2017_val",),
+        TRAIN=("voc_coco_format_train",),
+        TEST=("voc_coco_format_val",),
     ),
+    # SOLVER=dict(
+    #     OPTIMIZER=dict(
+    #         NAME="SGD",
+    #         BASE_LR=0.02,
+    #         WEIGHT_DECAY=1e-4,
+    #     ),
+    #     LR_SCHEDULER=dict(
+    #         GAMMA=0.1,
+    #         STEPS=(81000, 108000),
+    #         MAX_ITER=126000,
+    #         WARMUP_ITERS=1000,
+    #     ),
+    #     IMS_PER_BATCH=128,
+    # ),
     SOLVER=dict(
+        LR_SCHEDULER=dict(
+            NAME="WarmupMultiStepLR",
+            MAX_ITER=100000,
+            STEPS=(30000,60000),
+            WARMUP_FACTOR=1.0 / 1000,
+            WARMUP_ITERS=1000,
+            WARMUP_METHOD="linear",
+            GAMMA=0.1,
+        ),
         OPTIMIZER=dict(
             NAME="SGD",
-            BASE_LR=0.02,
-            WEIGHT_DECAY=1e-4,
+            BASE_LR=0.0025,
+            BIAS_LR_FACTOR=1.0,
+            WEIGHT_DECAY=0.0001,
+            WEIGHT_DECAY_NORM=0.0,
+            WEIGHT_DECAY_BIAS=0.0001,
+            SUBDIVISION=1,
+            MOMENTUM=0.9,
         ),
-        LR_SCHEDULER=dict(
-            GAMMA=0.1,
-            STEPS=(81000, 108000),
-            MAX_ITER=126000,
-            WARMUP_ITERS=1000,
-        ),
-        IMS_PER_BATCH=128,
+        CHECKPOINT_PERIOD=5000,
+        IMS_PER_BATCH=1,
     ),
     OUTPUT_DIR=osp.join(
-        '/data/Outputs/model_logs/playground',
+        './data/Outputs/model_logs/playground',
         osp.split(osp.realpath(__file__))[0].split("playground/")[-1]
     ),
     GLOBAL=dict(DUMP_TEST=False)
