@@ -2,7 +2,7 @@ from dl_lib.network.backbone import Backbone
 from dl_lib.layers import ShapeSpec
 from dl_lib.network import ResnetFPNBackbone
 from dl_lib.network import MixBiFPN
-from dl_lib.network import CenternetHead, CenterReppHead
+from dl_lib.network import CenternetHead
 from dl_lib.network import MBiFPNCenterNet
 
 
@@ -27,7 +27,7 @@ def build_upsample_layers(cfg, ):
 
 
 def build_head(cfg, ):
-    head = CenterReppHead(cfg)
+    head = CenternetHead(cfg)
     return head
 
 

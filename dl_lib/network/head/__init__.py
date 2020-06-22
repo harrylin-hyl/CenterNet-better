@@ -3,3 +3,4 @@
 
 from .centernet_deconv import CenternetDeconv
 from .centernet_head import CenternetHead
+from .centerrepp_head import CenterReppHead

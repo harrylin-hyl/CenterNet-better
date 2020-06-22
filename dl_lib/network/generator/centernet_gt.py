@@ -72,7 +72,7 @@ class CenterNetGT(object):
         radius = radius.type(torch.int).cpu().numpy()
         for i in range(gt_class.shape[0]):
             channel_index = gt_class[i]
-            CenterNetGT.draw_gaussian(fmap[channel_index], centers_int[i], radius[i])
+            CenterNetGT.draw_gaussian(fmap[channel_index], centers_int[i], radius[i], gt_wh[i,0]/gt_wh[i,1])
 
     @staticmethod
     def get_gaussian_radius(box_size, min_overlap):
@@ -115,18 +115,24 @@ class CenterNetGT(object):
         return gauss
 
     @staticmethod
-    def draw_gaussian(fmap, center, radius, k=1):
-        diameter = 2 * radius + 1
-        gaussian = CenterNetGT.gaussian2D((radius, radius), sigma=diameter / 6)
+    def draw_gaussian(fmap, center, radius, wh_ratio, k=1):
+        if wh_ratio > 1:
+            w_radius, h_radius = radius, int(radius / wh_ratio) 
+        else:
+            w_radius, h_radius = int(radius * wh_ratio), radius
+        # diameter = 2 * radius + 1
+        w_diameter, h_diameter = 2 * w_radius + 1, 2 * h_radius + 1
+        gaussian = CenterNetGT.gaussian2D((h_diameter, w_diameter), sigma=min((w_diameter, h_diameter)) / 6)
         gaussian = torch.Tensor(gaussian)
         x, y = int(center[0]), int(center[1])
         height, width = fmap.shape[:2]
 
-        left, right = min(x, radius), min(width - x, radius + 1)
-        top, bottom = min(y, radius), min(height - y, radius + 1)
-
+        # left, right = min(x, radius), min(width - x, radius + 1)
+        # top, bottom = min(y, radius), min(height - y, radius + 1)
+        left, right = min(x, w_radius), min(width - x, w_radius + 1)
+        top, bottom = min(y, h_radius), min(height - y, h_radius + 1)
         masked_fmap  = fmap[y - top:y + bottom, x - left:x + right]
-        masked_gaussian = gaussian[radius - top:radius + bottom, radius - left:radius + right]
+        masked_gaussian = gaussian[h_radius - top:h_radius + bottom, w_radius - left:w_radius + right]
         if min(masked_gaussian.shape) > 0 and min(masked_fmap.shape) > 0:
             masked_fmap = torch.max(masked_fmap, masked_gaussian * k)
             fmap[y - top:y + bottom, x - left:x + right] = masked_fmap
