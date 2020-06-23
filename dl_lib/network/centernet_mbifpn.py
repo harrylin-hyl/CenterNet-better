@@ -134,7 +134,7 @@ class MBiFPNCenterNet(nn.Module):
         image(tensor): ImageList in dl_lib.structures
         """
         n, c, h, w = images.tensor.shape
-        new_h, new_w = (h | 31) + 1, (w | 31) + 1
+        new_h, new_w = (h | 127) + 1, (w | 127) + 1
         center_wh = np.array([w // 2, h // 2], dtype=np.float32)
         size_wh = np.array([new_w, new_h], dtype=np.float32)
         down_scale = self.cfg.MODEL.CENTERNET.DOWN_SCALE

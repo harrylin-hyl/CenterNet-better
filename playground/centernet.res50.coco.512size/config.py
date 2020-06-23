@@ -64,12 +64,13 @@ _config_dict = dict(
             MAX_ITER=126000,
             WARMUP_ITERS=1000,
         ),
-        IMS_PER_BATCH=128,
+        IMS_PER_BATCH=8,
     ),
-    OUTPUT_DIR=osp.join(
-        '/data/Outputs/model_logs/playground',
-        osp.split(osp.realpath(__file__))[0].split("playground/")[-1]
-    ),
+    # OUTPUT_DIR=osp.join(
+    #     '/data/Outputs/model_logs/playground',
+    #     osp.split(osp.realpath(__file__))[0].split("playground/")[-1]
+    # ),
+    OUTPUT_DIR='./output',
     GLOBAL=dict(DUMP_TEST=False),
 )
 

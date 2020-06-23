@@ -24,6 +24,7 @@ tools/cvpack2_train
 *.pth
 *.pkl
 *.npy
+*.json
 
 # ipython/jupyter notebooks
 *.ipynb
